@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const JWT_SECRET = "mysecretkey"; // move to .env later
+const JWT_SECRET = process.env.JWT_SECRET || "Metacore@989/"; // move to .env later
 
 module.exports = (req, res, next) => {
     try {
