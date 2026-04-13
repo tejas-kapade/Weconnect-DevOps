@@ -130,3 +130,28 @@ exports.deletePool = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+//Admin Logic----- Get all pools and delete any pool (without ownership check)
+exports.getAllPools = async (req, res) => {
+    try {
+        const [rows] = await db.query("SELECT * FROM pools");
+        res.json(rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+exports.adminDeletePool = async (req, res) => {
+    try {
+        const poolId = req.params.id;
+
+        await db.query("DELETE FROM messages WHERE pool_id = ?", [poolId]);
+        await db.query("DELETE FROM pool_members WHERE pool_id = ?", [poolId]);
+        await db.query("DELETE FROM pools WHERE id = ?", [poolId]);
+
+        res.json({ message: "Pool deleted by admin" });
+
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};

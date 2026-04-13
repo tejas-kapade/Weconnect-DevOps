@@ -26,6 +26,20 @@ exports.getMessages = async (req, res) => {
         const [rows] = await db.query(`
             SELECT 
                 m.message,
+                m.created_at AS time,
+                u.username
+            FROM messages m
+            JOIN users u ON m.sender_id = u.id
+            WHERE m.pool_id = ?
+            ORDER BY m.created_at ASC
+        `, [poolId]);
+        
+
+        /*
+        OLD LOGIC FOR MESSAGE QUERY
+        const [rows] = await db.query(`
+            SELECT 
+                m.message,
                 DATE_FORMAT(m.created_at, '%Y-%m-%d %H:%i:%s') AS time,
                 u.username
             FROM messages m
@@ -33,6 +47,7 @@ exports.getMessages = async (req, res) => {
             WHERE m.pool_id = ?
             ORDER BY m.created_at ASC
         `, [poolId]);
+        */
 
         res.json(rows);
 

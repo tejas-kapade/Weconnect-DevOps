@@ -1,3 +1,12 @@
+
+function parseJwt(token) {
+    try {
+        return JSON.parse(atob(token.split('.')[1]));
+    } catch (e) {
+        return null;
+    }
+}
+
 async function login() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
@@ -12,8 +21,16 @@ async function login() {
 
     if (data.token) {
         localStorage.setItem("token", data.token);
-        window.location.href = "pools.html";
-    } else {
+
+        const user = parseJwt(data.token);
+        // Role-based redirect
+        if (user && user.role === "admin") {
+            window.location.href = "admin.html";
+        } else {
+            window.location.href = "pools.html";
+        }
+    } 
+    else {
         alert(data.error);
     }
 }
@@ -44,3 +61,12 @@ async function register() {
         alert(data.error);
     }
 }
+
+/*
+const user = parseJwt(data.token);
+
+if (user.role === "admin") {
+    window.location.href = "admin.html";
+} else {
+    window.location.href = "pools.html";
+}*/

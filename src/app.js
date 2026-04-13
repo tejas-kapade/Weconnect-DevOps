@@ -1,10 +1,13 @@
+require("dotenv").config();
+
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const db = require("./config/db");
 
+
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = "mysecretkey";
+//const JWT_SECRET = "mysecretkey";
 
 const app = express();
 
@@ -96,13 +99,22 @@ io.on("connection", (socket) => {
             [poolId, userId, message]
         );
 
-        // Broadcast
+        // Broadcast Old Logic for broadcasting
+        
         io.to(`pool_${poolId}`).emit("receive_message", {
             message,
             username,
             poolId,
             time: new Date()
         });
+        
+        /*
+        //New logic for broadcasting with time formatting
+        io.to(data.poolId).emit("receive_message", {
+            username: data.username,
+            message: data.message,
+            time: new Date() //IMPORTANT
+        }); */
 
     } catch (err) {
         console.error(err);

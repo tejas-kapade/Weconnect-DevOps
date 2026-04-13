@@ -19,7 +19,8 @@ setTimeout(() => {
 
 // receive messages
 socket.on("receive_message", (data) => {
-    addMessage(data);
+    //addMessage(data);
+    addMessage({ username: data.username, message: data.message, time: new Date() });
 });
 
 function sendMessage() {
@@ -44,10 +45,16 @@ function addMessage(data) {
         div.className = "message left";
     }
 
+    const timeObj = data.time ? new Date(data.time) : null;
+
+    const formattedTime = timeObj && !isNaN(timeObj)
+    ? timeObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    : "";
+
     div.innerHTML = `
-        <strong>${data.username}</strong>
-        <div>${data.message}</div>
-        <small>${new Date(data.time).toLocaleTimeString()}</small>
+        <strong class="msg-username">${data.username}</strong>
+        <div class="msg-body">${data.message}</div>
+        <small class="msg-time">${formattedTime}</small>
     `;
 
     const messagesDiv = document.getElementById("messages");

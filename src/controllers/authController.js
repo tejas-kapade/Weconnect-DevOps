@@ -47,10 +47,16 @@ exports.login = async (req, res) => {
         }
 
         // generate token
+        /*
         const token = jwt.sign(
             { id: user.id, username: user.username },
             JWT_SECRET,
             { expiresIn: "1h" }
+        );*/
+        //Added admin role to token for future use in authorization
+        const token = jwt.sign(
+            { id: user.id, username: user.username, role: user.role || "user" },
+            process.env.JWT_SECRET || "fallbacksecret"
         );
 
         res.json({ token });

@@ -3,8 +3,20 @@
         <link rel="stylesheet" href="css/style.css">
     </head>
 <body>
-<h2>Available Pools</h2>
+<!--<h2>Available Pools</h2>-->
 
+<div class="top-bar">
+    <div class="user-info">
+        User: <span id="username"></span>
+    </div>
+
+    <div class="top-actions">
+        <button onclick="toggleCreatePanel()">Create Pool</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<!-- OLD STATIC POOLS CREATE PANEL
 <div id="poolsContainer"></div>
 <div class="container">
     <h3>Create Pool</h3>
@@ -12,6 +24,35 @@
     <input id="poolPass" placeholder="Password">
     <button onclick="createPool()">Create</button>
 </div>
+-->
+
+<!-- Hidden Create Panel -->
+<div id="createModal" class="modal-overlay">
+    <div class="modal-box">
+        <h3>Create Pool</h3>
+        <input id="poolName" placeholder="Pool Name">
+        <input id="poolPass" placeholder="Password">
+
+        <button onclick="createPool()">Create</button>
+        <button onclick="toggleCreatePanel()">Cancel</button>
+    </div>
+</div>
+
+<!--Hidden Delete Confirmation Modal (instead of prompt we used panel) -->
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal-box">
+        <p id="deleteText"></p>
+
+        <button onclick="confirmDelete()">Delete</button>
+        <button onclick="closeDeleteModal()">Cancel</button>
+    </div>
+</div>
+
+<!-- Notification -->
+<div id="notification" class="notification hidden"></div>
+
+<h2 style="text-align:center;">Available Pools</h2>
+<div id="poolsContainer"></div>
 
 <script src="js/pools.js"></script>
 </body>
