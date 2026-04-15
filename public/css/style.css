@@ -1,8 +1,17 @@
 body {
+    height: 680px;
     margin: 0;
     font-family: 'Segoe UI';
     background: linear-gradient(135deg, #141e30, #243b55);
     color: white;
+}
+
+.logo {
+    text-align: center;
+    font-size: 36px;
+    margin-top: 30px;
+    color: #fff;
+    text-shadow: 0 0 2px #00c6ff, 0 0 20px #00c6ff, 0 0 4px #00c6ff;
 }
 
 /* Center container */
@@ -33,10 +42,12 @@ button {
     border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 button:hover {
     background: #00aaff;
+    transform: scale(1.08);
 }
 
 /* Pools Layout */
@@ -120,14 +131,19 @@ button:hover {
 
 /* Username ABOVE box  -------------NEW CSS */
 .msg-username {
-    font-size: 16px;
+    position: relative;
+    color:#89e6f7;
+    top:-10px;
+    font-size: 14px;
     margin-bottom: 5px;
-    opacity: 0.7;
+    opacity: 1;
+    background-color:none;
+    text-shadow: 0 0 2px #62838b, 0 0 4px #000000;
 }
 
 /* Message text */
 .msg-body {
-    font-size: 14px;
+    font-size: 16px;
 }
 
 /* TIME POSITIONING */
@@ -236,7 +252,7 @@ button:hover {
 /* Notification */
 .notification {
     position: fixed;
-    top: 6xpx;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
     background: #ffd93d;

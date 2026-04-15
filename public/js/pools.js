@@ -1,7 +1,14 @@
 const token = localStorage.getItem("token");
-
+//console.log("Token:", token); // DEBUG
 function parseJwt(token) {
     return JSON.parse(atob(token.split('.')[1]));
+}
+//If no token, show notification and redirect to login
+if(!token){
+    showNotification("Unautohrized! [No Token found] Redirecting to login...");
+    setTimeout(() => {
+        window.location.href = "login.html";
+    }, 3000);
 }
 
 const user = parseJwt(token);

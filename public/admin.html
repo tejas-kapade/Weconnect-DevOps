@@ -16,6 +16,19 @@
 
 <div id="adminPools"></div>
 
+<!--Hidden Delete Confirmation Modal (instead of prompt we used panel) -->
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal-box">
+        <p id="deleteText"></p>
+
+        <button onclick="confirmDelete()">Delete</button>
+        <button onclick="closeDeleteModal()">Cancel</button>
+    </div>
+</div>
+
+<!-- Notification -->
+<div id="notification" class="notification hidden"></div>
+
 <script src="js/admin.js"></script>
 
 </body>

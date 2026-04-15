@@ -73,7 +73,7 @@ io.use((socket, next) => {
     }
 });
 
-//Socker Logic
+//Socket Logic
 io.on("connection", (socket) => {
     require("dotenv").config();
     

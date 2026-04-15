@@ -7,6 +7,17 @@ function parseJwt(token) {
     }
 }
 
+function showNotification(msg) {
+    const box = document.getElementById("notification");
+
+    box.innerText = msg;
+    box.classList.remove("hidden");
+
+    setTimeout(() => {
+        box.classList.add("hidden");
+    }, 4000);
+}
+
 async function login() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
@@ -18,11 +29,14 @@ async function login() {
     });
 
     const data = await res.json();
+    console.log("data",data); // DEBUG
 
     if (data.token) {
         localStorage.setItem("token", data.token);
 
         const user = parseJwt(data.token);
+        console.log("user", user); // DEBUG
+        //return; // DEBUG - Remove this line after verifying token parsing
         // Role-based redirect
         if (user && user.role === "admin") {
             window.location.href = "admin.html";
@@ -31,7 +45,7 @@ async function login() {
         }
     } 
     else {
-        alert(data.error);
+        showNotification("Login failed. Please check your credentials.  || " +data.error);
     }
 }
 
@@ -55,10 +69,13 @@ async function register() {
     const data = await res.json();
 
     if (data.message) {
-        alert("Registered successfully");
-        window.location.href = "login.html";
+        showNotification("Registration successful! Redirecting to login...");
+       
+        setTimeout(() => {
+         window.location.href = "login.html";
+    }, 2000);
     } else {
-        alert(data.error);
+        showNotification("Registration failed. Please try again.");
     }
 }
 

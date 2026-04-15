@@ -111,7 +111,7 @@ exports.deletePool = async (req, res) => {
         }
 
         // 2. Check ownership (IMPORTANT CHANGE: created_by)
-        if (pool[0].created_by !== userId) {
+        if (pool[0].created_by !== userId && req.user.role !== "admin") {
             return res.status(403).json({ error: "Only creator can delete pool" });
         }
 

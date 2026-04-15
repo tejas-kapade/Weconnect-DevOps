@@ -14,7 +14,7 @@ router.post("/join", authMiddleware, joinPool);
 router.post("/create", authMiddleware, createPool);
 router.get("/", authMiddleware, getPools);
 router.delete("/:id", authMiddleware, deletePool);
-router.get("/admin/all", authMiddleware, adminOnly, getPools);
+router.get("/admin/all", authMiddleware, adminOnly, getPools);      
 router.delete("/admin/:id", authMiddleware, adminOnly, deletePool);
 
 module.exports = router;
