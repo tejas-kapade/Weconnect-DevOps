@@ -32,6 +32,9 @@ input {
     margin: 10px 0;
     border-radius: 6px;
     border: none;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
 }
 
 /* Buttons */
@@ -70,10 +73,12 @@ button:hover {
 .pool-box input {
     width: 100%;
 }
-
+#msg-container{
+    width:28%;
+}
 /* Chat Layout */
 #chat-container {
-    width: 60%;
+    width: 90%;
     margin: 30px auto;
 }
 
@@ -123,7 +128,7 @@ button:hover {
 
 /* Current user */
 .right {
-    background: #00c6ff;
+    background: #00c8ffe1;
     color: black;
     margin-left: auto;
     text-align: right;
@@ -260,8 +265,9 @@ button:hover {
     padding: 12px 25px;
     border-radius: 8px;
     font-weight: bold;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    box-shadow: 0 0 10px rgba(0,0,0,0.5), 0 0 20px #2d2d2d, 0 0 40px #8f8f8f;
     z-index: 9999;
+    text-align: center;
 }
 
 /*------------------------- CREATE POOL PANEL-- Overlay background */

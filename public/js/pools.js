@@ -88,7 +88,7 @@ async function loadPools() {
     </div>
 
     <input type="password" id="pass-${pool.id}" placeholder="Password">
-    <button onclick="join(${pool.id})">Join</button>
+    <button onclick="join(${pool.id},'${pool.name}')">Join</button>
 `;
 
         container.appendChild(div);
@@ -96,8 +96,13 @@ async function loadPools() {
 }
 
 
-async function join(poolId) {
+async function join(poolId,poolName) {
     const password = document.getElementById(`pass-${poolId}`).value;
+    console.log(poolId, poolName);
+    if (password == ''){
+        showNotification("Opening doors without keys ??? Enter password then sneak what's there :)");
+        return;
+    }
 
     const res = await fetch("/pools/join", {
         method: "POST",
@@ -115,10 +120,11 @@ async function join(poolId) {
     // ALWAYS ENTER CHAT IF SUCCESS OR ALREADY JOINED
     if (data.poolId) {
         localStorage.setItem("poolId", poolId);
+        localStorage.setItem("poolName", poolName);
         window.location.href = "chat.html";
     } else {
         //alert(data.error || "Join failed");
-        showNotification(data.error || "Join failed");
+        showNotification("Even I forgot keys sometimes it's natural \n Error:"+data.error || "Join failed");
     }
 }
 
@@ -127,6 +133,11 @@ async function join(poolId) {
 async function createPool() {
     const name = document.getElementById("poolName").value;
     const password = document.getElementById("poolPass").value;
+
+    if(name == '' || password == ''){
+        showNotification("Please enter pool name and password, buddy...\n Or you want to create a ghost room that no one can see??? hm........");
+        return;
+    }
 
     showNotification(`Your pool "${name}" will be created shortly...`);
 

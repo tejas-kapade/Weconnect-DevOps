@@ -1,6 +1,8 @@
 const token = localStorage.getItem("token");
 const poolId = localStorage.getItem("poolId");
+const poolName = localStorage.getItem("poolName");
 
+console.log("pool name", poolName); 
 //const db = require("./config/db");
 
 const socket = io({
@@ -38,6 +40,7 @@ function addMessage(data) {
     const div = document.createElement("div");
 
     const myUsername = parseJwt(token).username;
+    div.id="msg-container";
 
     if (data.username === myUsername) {
         div.className = "message right";
@@ -101,5 +104,5 @@ function logout() {
 }
 
 //Display pool name
-document.getElementById("poolName").innerText = "Pool ID: " + poolId;
-
+document.getElementById("poolName").innerText = poolName;
+document.getElementById("poolId").innerText = "Pool ID: " + poolId;

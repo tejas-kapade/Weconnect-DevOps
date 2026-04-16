@@ -22,6 +22,11 @@ async function login() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
+    if(username == '' || password == ''){
+        showNotification("Ahhh... How will I know who are you buddy? \n Please enter your username and password...");
+        return;
+    }
+
     const res = await fetch("/auth/login", {
         method: "POST",
         headers: {"Content-Type":"application/json"},
@@ -44,8 +49,12 @@ async function login() {
             window.location.href = "pools.html";
         }
     } 
+    if(data.error == "User not found"){
+        showNotification("Heyyy I could NOT find this username in my database, \nYou want to register ??");
+        return;
+    }
     else {
-        showNotification("Login failed. Please check your credentials.  || " +data.error);
+        showNotification("My dear "+username+" this password is wrong...\n Think Think I know you will find it out!!  \nError: " +data.error);
     }
 }
 
@@ -58,6 +67,17 @@ async function register() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
+    if(username == '' || email == '' || password == ''){
+        showNotification("Please fill all the fields properly...\nNo worries it will take few seconds i bet...");
+        return;
+    }
+    /*  We need to add email validation logic here, below code does not work.
+    email_validity= email.checkValidity();
+    if(!email_validity){
+        showNotification("Please enter valid email... \nExample: "+username+"@weconnect.com");
+        console.log(email_validity);
+        return;
+    }*/
     const res = await fetch("/auth/register", {
         method: "POST",
         headers: {
@@ -69,13 +89,13 @@ async function register() {
     const data = await res.json();
 
     if (data.message) {
-        showNotification("Registration successful! Redirecting to login...");
+        showNotification("Registration successful! Redirecting to login...\n WELCOME "+username+"!");
        
         setTimeout(() => {
          window.location.href = "login.html";
     }, 2000);
     } else {
-        showNotification("Registration failed. Please try again.");
+        showNotification("Username: '"+ username+ "' is already exist, \nPlease choose different one...");
     }
 }
 
