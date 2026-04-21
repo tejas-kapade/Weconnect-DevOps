@@ -3,11 +3,15 @@ require("dotenv").config();
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
+
 const db = require("./config/db");
 
+//const { connectDB } = require("./config/db");
 
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET || "Metacore@989/";
+
+// const poolUsers = {}; // { poolId: Set(userIds) }
 
 const app = express();
 
@@ -64,7 +68,7 @@ io.use((socket, next) => {
 
         const decoded = jwt.verify(token, JWT_SECRET);
 
-        socket.user = decoded; // 👈 attach user
+        socket.user = decoded; 
 
         next();
 
@@ -83,6 +87,15 @@ io.on("connection", (socket) => {
     socket.on("join_pool", (poolId) => {
         socket.join(`pool_${poolId}`);
         console.log(`User joined pool_${poolId}`);
+        /*
+        if (!poolUsers[poolId]) {
+        poolUsers[poolId] = new Set();
+        }
+
+        poolUsers[poolId].add(userId);
+        console.log(`Pool ${poolId} users:`, poolUsers[poolId]);
+
+        io.to(poolId).emit("online_count", poolUsers[poolId].size);*/
     });
 
     // Send message in real-time
@@ -123,6 +136,13 @@ io.on("connection", (socket) => {
 
     socket.on("disconnect", () => {
         console.log("User disconnected:", socket.id);
+        /*
+        for (let poolId in poolUsers) {
+        poolUsers[poolId].delete(socket.userId);
+
+        io.to(poolId).emit("online_count", poolUsers[poolId].size);
+        }
+        */
     });
 });
 
@@ -135,6 +155,14 @@ app.listen(PORT, () => {
 */
 
 //IMPORTANT: use server.listen NOT app.listen
+/* Old code, before adding DB connection retry logic */
 server.listen(3000, () => {
     console.log("Server running on port 3000");
 });
+
+/*Below code should be added to ensure that server starts only after DB connection is established, and also adds retry logic for DB connection
+(async () => {
+    await connectDB();
+    app.listen(3000, () => console.log("Server running"));
+})();
+*/

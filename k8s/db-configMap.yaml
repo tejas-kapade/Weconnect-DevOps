@@ -1,0 +1,193 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: weconnect-db-init
+data:
+  db.sql: |
+    /*M!999999\- enable the sandbox mode */ 
+    -- MariaDB dump 10.19-12.2.2-MariaDB, for Win64 (AMD64)
+    --
+    -- Host: localhost    Database: WECONDB
+    -- ------------------------------------------------------
+    -- Server version	12.2.2-MariaDB
+    
+    /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+    /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+    /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+    /*!40101 SET NAMES utf8mb4 */;
+    /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+    /*!40103 SET TIME_ZONE='+00:00' */;
+    /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+    /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+    /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+    /*M!100616 SET @OLD_NOTE_VERBOSITY=@@NOTE_VERBOSITY, NOTE_VERBOSITY=0 */;
+    
+    --
+    -- Table structure for table `messages`
+    --
+    
+    DROP TABLE IF EXISTS `messages`;
+    /*!40101 SET @saved_cs_client     = @@character_set_client */;
+    /*!40101 SET character_set_client = utf8mb4 */;
+    CREATE TABLE `messages` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `pool_id` int(11) DEFAULT NULL,
+      `sender_id` int(11) DEFAULT NULL,
+      `message` text DEFAULT NULL,
+      `created_at` timestamp NULL DEFAULT current_timestamp(),
+      PRIMARY KEY (`id`),
+      KEY `pool_id` (`pool_id`),
+      KEY `sender_id` (`sender_id`),
+      CONSTRAINT `fs-messages-constraint-1` FOREIGN KEY (`pool_id`) REFERENCES `pools` (`id`) ON DELETE CASCADE,
+      CONSTRAINT `fs-messages-constraint-2` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+    ) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+    /*!40101 SET character_set_client = @saved_cs_client */;
+    
+    --
+    -- Dumping data for table `messages`
+    --
+    
+    SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
+    LOCK TABLES `messages` WRITE;
+    /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
+    INSERT INTO `messages` VALUES
+    (46,38,4,'Hi Guys!!!','2026-04-15 19:58:47'),
+    (47,38,4,'Project is working now...!','2026-04-15 20:38:07'),
+    (48,38,5,'Hiee ','2026-04-16 08:36:00'),
+    (49,38,5,'hello everyone','2026-04-16 08:36:15'),
+    (50,38,5,'😁','2026-04-16 08:36:31'),
+    (51,38,4,'Chats are working and live','2026-04-16 10:06:38');
+    /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
+    UNLOCK TABLES;
+    COMMIT;
+    SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
+    
+    --
+    -- Table structure for table `pool_members`
+    --
+    
+    DROP TABLE IF EXISTS `pool_members`;
+    /*!40101 SET @saved_cs_client     = @@character_set_client */;
+    /*!40101 SET character_set_client = utf8mb4 */;
+    CREATE TABLE `pool_members` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `user_id` int(11) DEFAULT NULL,
+      `pool_id` int(11) DEFAULT NULL,
+      `joined_at` timestamp NULL DEFAULT current_timestamp(),
+      PRIMARY KEY (`id`),
+      UNIQUE KEY `user_id` (`user_id`,`pool_id`),
+      KEY `pool_id` (`pool_id`),
+      CONSTRAINT `fs-pool_members-constraint-1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+      CONSTRAINT `fs-pool_members-constraint-2` FOREIGN KEY (`pool_id`) REFERENCES `pools` (`id`) ON DELETE CASCADE
+    ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+    /*!40101 SET character_set_client = @saved_cs_client */;
+    
+    --
+    -- Dumping data for table `pool_members`
+    --
+    
+    SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
+    LOCK TABLES `pool_members` WRITE;
+    /*!40000 ALTER TABLE `pool_members` DISABLE KEYS */;
+    INSERT INTO `pool_members` VALUES
+    (13,4,38,'2026-04-15 19:58:40'),
+    (14,5,38,'2026-04-16 08:35:47'),
+    (15,5,39,'2026-04-16 08:53:49');
+    /*!40000 ALTER TABLE `pool_members` ENABLE KEYS */;
+    UNLOCK TABLES;
+    COMMIT;
+    SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
+    
+    --
+    -- Table structure for table `pools`
+    --
+    
+    DROP TABLE IF EXISTS `pools`;
+    /*!40101 SET @saved_cs_client     = @@character_set_client */;
+    /*!40101 SET character_set_client = utf8mb4 */;
+    CREATE TABLE `pools` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `name` varchar(100) NOT NULL,
+      `password` varchar(255) NOT NULL,
+      `created_by` int(11) DEFAULT NULL,
+      `created_at` timestamp NULL DEFAULT current_timestamp(),
+      PRIMARY KEY (`id`),
+      KEY `created_by` (`created_by`),
+      CONSTRAINT `fs-pools-constraint-1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE SET NULL
+    ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+    /*!40101 SET character_set_client = @saved_cs_client */;
+    
+    --
+    -- Dumping data for table `pools`
+    --
+    
+    SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
+    LOCK TABLES `pools` WRITE;
+    /*!40000 ALTER TABLE `pools` DISABLE KEYS */;
+    INSERT INTO `pools` VALUES
+    (38,'Global (psw:123)','123',4,'2026-04-15 19:57:19'),
+    (39,'DevOps Discussion','123',4,'2026-04-15 19:57:50'),
+    (41,'Meta','meta',4,'2026-04-16 10:31:47');
+    /*!40000 ALTER TABLE `pools` ENABLE KEYS */;
+    UNLOCK TABLES;
+    COMMIT;
+    SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
+    
+    --
+    -- Table structure for table `users`
+    --
+    
+    DROP TABLE IF EXISTS `users`;
+    /*!40101 SET @saved_cs_client     = @@character_set_client */;
+    /*!40101 SET character_set_client = utf8mb4 */;
+    CREATE TABLE `users` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `username` varchar(50) NOT NULL,
+      `email` varchar(100) NOT NULL,
+      `password` varchar(255) NOT NULL,
+      `created_at` timestamp NULL DEFAULT current_timestamp(),
+      `role` varchar(20) DEFAULT 'user',
+      PRIMARY KEY (`id`),
+      UNIQUE KEY `username` (`username`),
+      UNIQUE KEY `email` (`email`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+    /*!40101 SET character_set_client = @saved_cs_client */;
+    
+    --
+    -- Dumping data for table `users`
+    --
+    
+    SET @OLD_AUTOCOMMIT=@@AUTOCOMMIT, @@AUTOCOMMIT=0;
+    LOCK TABLES `users` WRITE;
+    /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+    INSERT INTO `users` VALUES
+    (1,'tejas','tejas@test.com','123456','2026-04-10 11:15:42','user'),
+    (2,'mango','mango@test.com','$2b$10$p/5P5Lm2U5JDBwgUCOOZNuXdFICyW7fXityMMfZRrSEDJe/gvqckq','2026-04-10 19:45:56','user'),
+    (4,'Tejask','tejas@weconnect.com','$2b$10$At2dpJd5biU6A3XX61G1xO/sUqgwGCcXIgm6VkrgnZeFVayz9NCPy','2026-04-11 08:29:58','user'),
+    (5,'aru','aru@weconnect.com','$2b$10$gsUzmFG2EBKQ3drqpw7Zk.tbXaRDIw2v71/2ug45LTZXSLP7ZPD3G','2026-04-12 15:48:10','user'),
+    (6,'admin','admin@weconnect.com','$2b$10$ba1yegWZ6HgemAWzHT4oiuijrTW2uJ91OebcZhaEbst9Bg6pYTsk.','2026-04-13 08:27:23','admin'),
+    (7,'Alita','alita@weconnect.com','$2b$10$aL1LoOENz/5Yol5wTWO8V.6nqSAN3BL7KhO4yAui99Co4VO/6W7JK','2026-04-15 20:24:20','user'),
+    (8,'Shejwan','sheh@weconnect.com','$2b$10$Z4DCXNiX5rgBuTL3wRtDTeoYByeGXZ8AIKcbOFr.zUO07NAOsSgb.','2026-04-15 20:24:54','user'),
+    (13,'Docker','doker.weconnect.com','$2b$10$cETm9onjxlJU.pB91UF4ReYH2TKvRVuOV9a6xBbwTUYcZFB1jCuoG','2026-04-15 20:26:02','user'),
+    (14,'relis','relis.weconnect.com','$2b$10$8d3yTqE5HcGTsiUnKyCN/uq9i052k5NQzfDdwmB4ZpsNPM096VQdy','2026-04-15 20:27:29','user'),
+    (17,'sds','dsds','$2b$10$/fK5Y5iguhO6msDKEfPRuOvLwXkYZV7a7hTMONoQJf4Bne9RJ9/8C','2026-04-16 09:39:46','user'),
+    (22,'dsdsd','dsds@gm.cl','$2b$10$IyQaG5vyFqbR.WkiVfalq.VjMTldWtx2EImuC/7krnsCV3oHLlpr.','2026-04-16 09:41:00','user'),
+    (51,'tejasq','fdfd','$2b$10$AzOk37OONqrPIyHP4H1.vuKJ08dnePLH3E90.LNbebtNgzWXVwfui','2026-04-16 10:02:53','user'),
+    (52,'qwe','qwqqwq','$2b$10$8IeYuI5Xa4v5IZe3.nN9a..7q/4n5lC5vlrdMcFz25yxsDcilBkOW','2026-04-16 10:10:50','user');
+    /*!40000 ALTER TABLE `users` ENABLE KEYS */;
+    UNLOCK TABLES;
+    COMMIT;
+    SET AUTOCOMMIT=@OLD_AUTOCOMMIT;
+    /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+    
+    /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+    /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+    /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+    /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+    /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+    /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+    /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
+    
+    -- Dump completed on 2026-04-16 16:49:37
+    
+    

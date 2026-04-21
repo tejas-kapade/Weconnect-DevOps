@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weconnect-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weconnect-db
+  template:
+    metadata:
+      labels:
+        app: weconnect-db
+    spec:
+      containers:
+      - name: mariadb
+        image: mariadb:10.6
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: weconnect-secret
+              key: DB_PASSWORD
+        - name: MYSQL_DATABASE
+          value: WECONDB
+        volumeMounts:
+        - name: db-storage
+          mountPath: /var/lib/mysql
+        - name: db-init
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+      - name: db-storage
+        persistentVolumeClaim:
+          claimName: db-pvc
+      - name: db-init
+        configMap:
+          name: weconnect-db-init

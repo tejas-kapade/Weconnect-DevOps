@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    container_name: weconnect-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=989878
+      - DB_NAME=WECONDB
+      - JWT_SECRET=Metacore@989/
+    volumes:
+      - .:/app
+      - /app/node_modules
+  db:
+    image: mariadb:10.6
+    container_name: weconnect-db
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=989878
+      - MYSQL_DATABASE=WECONDB
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db/db.sql:/docker-entrypoint-initdb.d/db.sql
+volumes:
+  db_data:

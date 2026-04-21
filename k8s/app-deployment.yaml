@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weconnect-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weconnect-app
+  template:
+    metadata:
+      labels:
+        app: weconnect-app
+    spec:
+      containers:
+      - name: app
+        image: metejas/weconnect:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DB_HOST
+          value: weconnect-db
+        - name: DB_USER
+          value: root
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: weconnect-secret
+              key: DB_PASSWORD
+        - name: DB_NAME
+          value: WECONDB
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: weconnect-secret
+              key: JWT_SECRET

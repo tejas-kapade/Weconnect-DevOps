@@ -45,8 +45,10 @@ async function login() {
         // Role-based redirect
         if (user && user.role === "admin") {
             window.location.href = "admin.html";
+            return;
         } else {
             window.location.href = "pools.html";
+            return;
         }
     } 
     if(data.error == "User not found"){
@@ -95,7 +97,7 @@ async function register() {
          window.location.href = "login.html";
     }, 2000);
     } else {
-        showNotification("Username: '"+ username+ "' is already exist, \nPlease choose different one...");
+        showNotification("Username: '"+ username+ "' is already exist, \nPlease choose different one...\n"+ "Error: "+data.error);
     }
 }
 
@@ -107,3 +109,7 @@ if (user.role === "admin") {
 } else {
     window.location.href = "pools.html";
 }*/
+
+function backToLogin() {
+    window.location.href = "login.html";
+}

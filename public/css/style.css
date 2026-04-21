@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     height: 680px;
     margin: 0;
@@ -74,12 +78,14 @@ button:hover {
     width: 100%;
 }
 #msg-container{
-    width:28%;
+    width:fit-content;
+    min-width: 100px;    /* Prevents very short messages from looking tiny */
+    max-width: 70%;     /* Prevents messages from stretching across the whole screen */
 }
 /* Chat Layout */
 #chat-container {
-    width: 90%;
-    margin: 30px auto;
+    width: 96%;
+    margin: 10px auto;
 }
 
 /* Header */
@@ -92,7 +98,7 @@ button:hover {
 }
 
 #messages {
-    height: 450px;
+    height: 70%;
     overflow-y: auto;
     padding: 15px;
     background: rgba(0,0,0,0.4);
@@ -114,7 +120,7 @@ button:hover {
 .message {
     position: relative;
     max-width: 60%;
-    padding: 12px;
+    padding: 16px;
     margin: 20px;
     border-radius: 10px;
     background: #2c2c3e;
@@ -124,6 +130,14 @@ button:hover {
 .left {
     background: #3a3a3a;
     text-align: left;
+    left: -1%; 
+}
+.left .msg-time{
+    right: 10px; /* 👈 LEFT corner */
+    text-align: right;
+}
+.left .message{
+    left: 0; /* 👈 LEFT corner */
 }
 
 /* Current user */
@@ -132,6 +146,7 @@ button:hover {
     color: black;
     margin-left: auto;
     text-align: right;
+    right: -1%;
 }
 
 /* Username ABOVE box  -------------NEW CSS */
@@ -140,7 +155,6 @@ button:hover {
     color:#89e6f7;
     top:-10px;
     font-size: 14px;
-    margin-bottom: 5px;
     opacity: 1;
     background-color:none;
     text-shadow: 0 0 2px #62838b, 0 0 4px #000000;
@@ -149,6 +163,7 @@ button:hover {
 /* Message text */
 .msg-body {
     font-size: 16px;
+    padding: 0px 0px 12px 0px; /* Extra top padding for username */
 }
 
 /* TIME POSITIONING */
@@ -306,4 +321,37 @@ button:hover {
 /* When visible */
 .modal-overlay.active {
     display: flex;
+}
+
+.exit-btn {
+    background: rgb(248, 68, 104);
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#chat-btn {
+    display: flex;
+    gap: 10px;
+}
+
+/* Responsive design */
+
+@media (max-width: 768px) {
+    .msg {
+        max-width: 90%;
+    }
+
+    .chat-container {
+        padding: 10px;
+    }
+
+    input {
+        font-size: 16px;
+    }
+
+    button {
+        padding: 10px;
+    }
 }

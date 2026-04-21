@@ -26,7 +26,7 @@ exports.getMessages = async (req, res) => {
         const [rows] = await db.query(`
             SELECT 
                 m.message,
-                m.created_at AS time,
+                m.created_at,
                 u.username
             FROM messages m
             JOIN users u ON m.sender_id = u.id

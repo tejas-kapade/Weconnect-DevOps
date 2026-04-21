@@ -1,13 +1,17 @@
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/style.css">
     </head>
 
 <body>
 
 <div class="chat-header">
-    <h3 id="poolId">Chat ID</h3> <h3 id="poolName" style="left:50%"> Pool Name</h3>
+    <h3 id="poolId">Chat ID</h3> <!--<h3 id="onlineCount" style="color:cadetblue;">Online</h3>--> <h3 id="poolName" style="left:50%"> Pool Name </h3> 
+    <div id="chat-btn">
+    <button onclick="exitChat()" class="exit-btn">Back to pools</button>
     <button onclick="logout()">Logout</button>
+    </div>
 </div>
 
 <div id="chat-container">

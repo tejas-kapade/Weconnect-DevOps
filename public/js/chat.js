@@ -24,9 +24,14 @@ socket.on("receive_message", (data) => {
     //addMessage(data);
     addMessage({ username: data.username, message: data.message, time: new Date() });
 });
+/*
+socket.on("online_count", (count) => {
+    document.getElementById("onlineCount").innerText = " online:" + count ;
+});*/
 
 function sendMessage() {
     const message = document.getElementById("msgInput").value;
+    if (message.trim() === "") return;
 
     socket.emit("send_message", {
         poolId,
@@ -36,8 +41,14 @@ function sendMessage() {
     document.getElementById("msgInput").value = "";
 }
 
+function formatTime(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
 function addMessage(data) {
     const div = document.createElement("div");
+    //console.log("TIME: "+ data.time);
 
     const myUsername = parseJwt(token).username;
     div.id="msg-container";
@@ -48,16 +59,13 @@ function addMessage(data) {
         div.className = "message left";
     }
 
-    const timeObj = data.time ? new Date(data.time) : null;
-
-    const formattedTime = timeObj && !isNaN(timeObj)
-    ? timeObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    : "";
+    //const timeObj = data.time ? new Date(data.time) : null;
+    //const formattedTime = timeObj && !isNaN(timeObj) ? timeObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "";
 
     div.innerHTML = `
         <strong class="msg-username">${data.username}</strong>
         <div class="msg-body">${data.message}</div>
-        <small class="msg-time">${formattedTime}</small>
+        <small class="msg-time">${formatTime(data.time)}</small>
     `;
 
     const messagesDiv = document.getElementById("messages");
@@ -80,14 +88,32 @@ async function loadOldMessages() {
 
     const messages = await res.json();
     console.log("OLD MESSAGES:", messages);
-
+ 
+    /* Old logic for displaying messages without time formatting */
     messages.forEach(msg => {
         addMessage({
             username: msg.username,
             message: msg.message,
             time: msg.created_at
         });
-    });
+    }); 
+
+    /* New logic for displaying messages with time formatting 
+
+    messages.forEach(msg => {
+    const isMe = msg.sender_id == user.id;
+
+    const div = document.createElement("div");
+    div.className = isMe ? "msg right" : "msg left";
+
+    div.innerHTML = `
+        <div class="msg-header">${msg.username}</div>
+        <div class="msg-text">${msg.message}</div>
+        <div class="msg-time">${formatTime(msg.created_at)}</div>
+    `;
+
+    chatBox.appendChild(div);
+});*/
 }
 
 //Key Support for Enter key to send message
@@ -103,6 +129,12 @@ function logout() {
     window.location.href = "login.html";
 }
 
+function exitChat() {
+    localStorage.removeItem("poolId");
+    window.location.href = "pools.html";
+}
+
 //Display pool name
 document.getElementById("poolName").innerText = poolName;
 document.getElementById("poolId").innerText = "Pool ID: " + poolId;
+

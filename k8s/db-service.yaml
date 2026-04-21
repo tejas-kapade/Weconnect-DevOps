@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: weconnect-db
+spec:
+  selector:
+    app: weconnect-db
+  ports:
+  - port: 3306
+    targetPort: 3306
