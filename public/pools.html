@@ -3,7 +3,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/style.css">
     </head>
-<body>
+<body class="pools-page">
 <!--<h2>Available Pools</h2>-->
 
 <div class="top-bar">
@@ -12,8 +12,8 @@
     </div>
 
     <div class="top-actions">
-        <button onclick="toggleCreatePanel()">Create Pool</button>
-        <button onclick="logout()">Logout</button>
+        <button onclick="toggleCreatePanel()" class="pools-primary-btn">Create Pool</button>
+        <button onclick="logout()" class="secondary-btn pools-neutral-btn">Logout</button>
     </div>
 </div>
 
@@ -34,8 +34,8 @@
         <input id="poolName" placeholder="Pool Name">
         <input id="poolPass" placeholder="Password">
 
-        <button onclick="createPool()">Create</button>
-        <button onclick="toggleCreatePanel()">Cancel</button>
+        <button onclick="createPool()" class="pools-primary-btn">Create</button>
+        <button onclick="toggleCreatePanel()" class="secondary-btn pools-neutral-btn">Cancel</button>
     </div>
 </div>
 
@@ -44,16 +44,21 @@
     <div class="modal-box">
         <p id="deleteText"></p>
 
-        <button onclick="confirmDelete()">Delete</button>
-        <button onclick="closeDeleteModal()">Cancel</button>
+        <button onclick="confirmDelete()" class="danger-btn">Delete</button>
+        <button onclick="closeDeleteModal()" class="secondary-btn pools-neutral-btn">Cancel</button>
     </div>
 </div>
 
 <!-- Notification -->
 <div id="notification" class="notification hidden"></div>
 
-<h2 style="text-align:center;">Available Pools</h2>
+<h2 class="section-title">Available Pools</h2>
 <div id="poolsContainer"></div>
+
+<footer class="app-footer">
+    <span>Created by <a href="https://github.com/tejas-kapade/Weconnect-DevOps" target="_blank" rel="noopener noreferrer">tejas-kapade/Weconnect-DevOps</a></span>
+    <span>weconnect version 1.2</span>
+</footer>
 
 <script src="js/pools.js"></script>
 </body>

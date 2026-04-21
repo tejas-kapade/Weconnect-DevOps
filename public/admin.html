@@ -5,14 +5,14 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body>
+<body class="pools-page admin-page">
 
 <div class="top-bar">
     <h2>Admin Panel</h2>
-    <button onclick="logout()">Logout</button>
+    <button onclick="logout()" class="secondary-btn pools-neutral-btn">Logout</button>
 </div>
 
-<h3 style="text-align:center;">All Pools</h3>
+<h3 class="section-title">All Pools</h3>
 
 <div id="adminPools"></div>
 
@@ -21,13 +21,18 @@
     <div class="modal-box">
         <p id="deleteText"></p>
 
-        <button onclick="confirmDelete()">Delete</button>
-        <button onclick="closeDeleteModal()">Cancel</button>
+        <button onclick="confirmDelete()" class="danger-btn">Delete</button>
+        <button onclick="closeDeleteModal()" class="secondary-btn pools-neutral-btn">Cancel</button>
     </div>
 </div>
 
 <!-- Notification -->
 <div id="notification" class="notification hidden"></div>
+
+<footer class="app-footer">
+    <span>Created by <a href="https://github.com/tejas-kapade/Weconnect-DevOps" target="_blank" rel="noopener noreferrer">tejas-kapade/Weconnect-DevOps</a></span>
+    <span>weconnect version 1.2</span>
+</footer>
 
 <script src="js/admin.js"></script>
 

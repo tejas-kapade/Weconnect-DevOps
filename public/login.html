@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="auth-page">
 
 <h1 class="logo"> <span style="color:rgb(241, 243, 181);">WE</span> CONNECT </h1>
 
@@ -14,14 +14,20 @@
 
     <input id="username" placeholder="Username">
     <input type="password" id="password" placeholder="Password">
-    <br><br>
-    <button onclick="login()">Login</button>
-    <p style="opacity: 0.4;">New user?</p>
-    <button onclick="goRegister()" style="background-color: rgb(95, 231, 113);">Register Here</button>
+    <div class="auth-actions">
+        <button onclick="login()">Login</button>
+        <button onclick="goRegister()" class="secondary-btn auth-secondary">Register Here</button>
+    </div>
+    <p class="auth-helper">New user? Create your account in seconds.</p>
 </div>
 
 <!-- Notification -->
 <div id="notification" class="notification hidden"></div>
+
+<footer class="app-footer">
+    <span>Created by <a href="https://github.com/tejas-kapade/Weconnect-DevOps" target="_blank" rel="noopener noreferrer">tejas-kapade/Weconnect-DevOps</a></span>
+    <span>weconnect version 1.2</span>
+</footer>
 
 <script src="js/auth.js"></script>
 </body>
