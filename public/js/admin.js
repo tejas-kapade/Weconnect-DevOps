@@ -1,11 +1,15 @@
 const token = localStorage.getItem("token");
+
 function parseJwt(token) {
-    return JSON.parse(atob(token.split('.')[1]));
+    try {
+        return JSON.parse(atob(token.split(".")[1]));
+    } catch (e) {
+        return null;
+    }
 }
 
 function showNotification(msg) {
     const box = document.getElementById("notification");
-
     box.innerText = msg;
     box.classList.remove("hidden");
 
@@ -14,78 +18,131 @@ function showNotification(msg) {
     }, 4000);
 }
 
-
-function logout() {
-    localStorage.clear();
-    window.location.href = "login.html";
+function setOutput(content) {
+    document.getElementById("queryOutput").textContent = content;
 }
 
-async function loadPools() {
-    const res = await fetch("/pools/admin/all", {
-        headers: {
-            Authorization: "Bearer " + token
-        }
-    });
+function escapeHtml(value) {
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
 
-    const data = await res.json();
+function formatCellValue(value) {
+    if (value === null || value === undefined) {
+        return '<span class="admin-null">NULL</span>';
+    }
 
-    const container = document.getElementById("adminPools");
-    container.innerHTML = "";
+    if (typeof value === "object") {
+        return escapeHtml(JSON.stringify(value));
+    }
 
-    data.forEach(pool => {
-        const div = document.createElement("div");
-        div.classList.add("container");
+    return escapeHtml(value);
+}
 
-        div.innerHTML = `
-            <h3>${pool.name}</h3>
-            <button onclick="deletePool(${pool.id}, '${pool.name}')">Delete</button>
+function renderRowsTable(rows, count) {
+    const output = document.getElementById("queryOutput");
+
+    if (!rows.length) {
+        output.innerHTML = `
+            <div class="admin-output-meta">Query OK, 0 rows returned</div>
+            <div class="admin-output-empty">Empty set</div>
         `;
+        return;
+    }
 
-        container.appendChild(div);
-    });
+    const columns = Object.keys(rows[0]);
+    const headerHtml = columns.map((column) => `<th>${escapeHtml(column)}</th>`).join("");
+    const bodyHtml = rows
+        .map((row) => {
+            const cells = columns
+                .map((column) => `<td>${formatCellValue(row[column])}</td>`)
+                .join("");
+            return `<tr>${cells}</tr>`;
+        })
+        .join("");
+
+    output.innerHTML = `
+        <div class="admin-output-meta">${count} row${count === 1 ? "" : "s"} returned</div>
+        <div class="admin-table-wrap">
+            <table class="admin-output-table">
+                <thead>
+                    <tr>${headerHtml}</tr>
+                </thead>
+                <tbody>
+                    ${bodyHtml}
+                </tbody>
+            </table>
+        </div>
+    `;
 }
 
-async function confirmDelete() {
-    closeDeleteModal();
-    showNotification(`Pool "${deletePoolName}" will be deleted shortly By Admin...`);
+function renderResult(result) {
+    const output = document.getElementById("queryOutput");
+    output.innerHTML = `
+        <div class="admin-output-meta">Query executed successfully</div>
+        <pre class="admin-result-json">${escapeHtml(JSON.stringify(result, null, 2))}</pre>
+    `;
+}
 
-    console.log("Deleting pool ID:", deletePoolId); // DEBUG
-
-    setTimeout(async () => {
-    const res = await fetch(`/pools/admin/${deletePoolId}`, {
-        method: "DELETE",
-        headers: {
-            Authorization: "Bearer " + token
-        }
-    });
-
-    const data = await res.json();
-
-    if (data.message) {
-        location.reload();
-    }
-    else{
-        showNotification(data.error);
-    }
+if (!token) {
+    showNotification("Unauthorized. Redirecting to login...");
+    setTimeout(() => {
+        window.location.href = "login.html";
     }, 1500);
 }
 
-function deletePool(poolId, poolName) {
-    deletePoolId = poolId;
-    deletePoolName = poolName;
-
-    document.getElementById("deleteText").innerHTML =
-        `Confirm Delete pool: "${poolName}"? <br><br> <p style="color:tomato;">All chats will be deleted permanently!</p>`;
-
-    //document.getElementById("deleteModal").classList.remove("hidden");
-    document.getElementById("deleteModal").classList.add("active");
+const user = parseJwt(token);
+if (!user || user.role !== "admin") {
+    showNotification("Admin access only. Redirecting...");
+    setTimeout(() => {
+        window.location.href = "login.html";
+    }, 1500);
 }
 
-function closeDeleteModal() {
-    document.getElementById("deleteModal").classList.add("active");
+async function runQuery() {
+    const query = document.getElementById("queryInput").value.trim();
+
+    if (!query) {
+        showNotification("Please enter a SQL query.");
+        return;
+    }
+
+    setOutput("Running query...");
+
+    try {
+        const res = await fetch("/admin/query", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token
+            },
+            body: JSON.stringify({ query })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            setOutput(data.error || "Query failed.");
+            return;
+        }
+
+        if (Array.isArray(data.rows)) {
+            renderRowsTable(data.rows, data.count || data.rows.length);
+            return;
+        }
+
+        renderResult(data.result || data);
+    } catch (err) {
+        setOutput("Request failed. Please try again.");
+    }
 }
 
-function closeDeleteModal() {
-    document.getElementById("deleteModal").classList.remove("active");
-}
-loadPools();
+document.getElementById("queryInput").addEventListener("keydown", function (e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+        runQuery();
+    }
+});

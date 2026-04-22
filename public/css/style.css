@@ -69,6 +69,14 @@ body.pools-page {
     padding-top: 26px;
 }
 
+body.admin-console-page {
+    min-height: 100dvh;
+    padding: 32px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 body::before {
     content: "";
     position: fixed;
@@ -265,6 +273,117 @@ button:active {
 .app-footer a:hover {
     color: #bfdbfe;
     text-decoration: underline;
+}
+
+.admin-console {
+    width: min(100%, 980px);
+    padding: 28px;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    border-radius: 22px;
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(18px);
+}
+
+.admin-console h1 {
+    margin-bottom: 18px;
+    color: var(--heading);
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+}
+
+.admin-query-input {
+    width: 100%;
+    min-height: 72px;
+    padding: 12px 14px;
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 14px;
+    background: rgba(15, 23, 42, 0.9);
+    color: #dbeafe;
+    resize: vertical;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.admin-console-actions {
+    margin-top: 14px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.admin-output-box {
+    min-height: 240px;
+    margin-top: 18px;
+    padding: 16px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 16px;
+    background: rgba(15, 23, 42, 0.68);
+    color: #dbeafe;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow: auto;
+}
+
+.admin-output-meta {
+    margin-bottom: 12px;
+    color: #93c5fd;
+    font-size: 0.84rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.admin-output-empty {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.admin-table-wrap {
+    overflow: auto;
+}
+
+.admin-output-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 520px;
+}
+
+.admin-output-table th,
+.admin-output-table td {
+    padding: 10px 12px;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    text-align: left;
+    vertical-align: top;
+}
+
+.admin-output-table th {
+    position: sticky;
+    top: 0;
+    background: rgba(30, 41, 59, 0.96);
+    color: #f8fafc;
+    font-weight: 700;
+}
+
+.admin-output-table td {
+    color: #dbeafe;
+    background: rgba(15, 23, 42, 0.58);
+}
+
+.admin-output-table tbody tr:nth-child(even) td {
+    background: rgba(30, 41, 59, 0.5);
+}
+
+.admin-null {
+    color: #fda4af;
+    font-style: italic;
+}
+
+.admin-result-json {
+    margin: 0;
+    color: #dbeafe;
+    font-family: Consolas, "Courier New", monospace;
+    white-space: pre-wrap;
 }
 
 body.auth-page .app-footer {
@@ -675,6 +794,11 @@ body.admin-page .top-bar button {
         gap: 18px;
     }
 
+    body.admin-console-page {
+        padding: 24px 14px;
+        align-items: stretch;
+    }
+
     body.pools-page {
         padding-top: 20px;
     }
@@ -709,6 +833,10 @@ body.admin-page .top-bar button {
         justify-content: flex-start;
         padding: 52px 12px 18px;
         gap: 16px;
+    }
+
+    body.admin-console-page {
+        padding: 14px 10px;
     }
 
     body.pools-page {
@@ -785,6 +913,31 @@ body.admin-page .top-bar button {
 
     .auth-helper {
         margin-top: 14px;
+        font-size: 0.84rem;
+    }
+
+    .admin-console {
+        padding: 18px;
+        border-radius: 16px;
+    }
+
+    .admin-query-input {
+        min-height: 64px;
+        font-size: 0.88rem;
+    }
+
+    .admin-console-actions {
+        justify-content: stretch;
+    }
+
+    .admin-console-actions button {
+        width: 100%;
+    }
+
+    .admin-output-box {
+        min-height: 220px;
+        padding: 14px;
+        border-radius: 14px;
         font-size: 0.84rem;
     }
 

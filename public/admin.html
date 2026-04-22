@@ -1,38 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Panel</title>
+    <title>Admin Query Console</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
-<body class="pools-page admin-page">
+<body class="admin-console-page">
 
-<div class="top-bar">
-    <h2>Admin Panel</h2>
-    <button onclick="logout()" class="secondary-btn pools-neutral-btn">Logout</button>
-</div>
-
-<h3 class="section-title">All Pools</h3>
-
-<div id="adminPools"></div>
-
-<!--Hidden Delete Confirmation Modal (instead of prompt we used panel) -->
-<div id="deleteModal" class="modal-overlay">
-    <div class="modal-box">
-        <p id="deleteText"></p>
-
-        <button onclick="confirmDelete()" class="danger-btn">Delete</button>
-        <button onclick="closeDeleteModal()" class="secondary-btn pools-neutral-btn">Cancel</button>
+<div class="admin-console">
+    <h1>Admin Query Console</h1>
+    <textarea id="queryInput" class="admin-query-input" placeholder="Enter SQL query here..."></textarea>
+    <div class="admin-console-actions">
+        <button onclick="runQuery()" class="pools-primary-btn">Run Query</button>
     </div>
+    <div id="queryOutput" class="admin-output-box">Query output will appear here.</div>
 </div>
 
-<!-- Notification -->
 <div id="notification" class="notification hidden"></div>
-
-<footer class="app-footer">
-    <span>Created by <a href="https://github.com/tejas-kapade/Weconnect-DevOps" target="_blank" rel="noopener noreferrer">tejas-kapade/Weconnect-DevOps</a></span>
-    <span>weconnect version 1.2</span>
-</footer>
 
 <script src="js/admin.js"></script>
 

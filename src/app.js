@@ -46,6 +46,7 @@ app.use("/messages", messageRoutes);
 
 //For Auth routes
 app.use("/auth", require("./routes/authRoutes"));
+app.use("/admin", require("./routes/adminRoutes"));
 
 // Create HTTP server
 const server = http.createServer(app);
