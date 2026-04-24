@@ -25,7 +25,7 @@ WeConnect is a real-time group chat application built with Node.js, Express, Soc
 <img width="1893" height="955" alt="image" src="https://github.com/user-attachments/assets/7b9fc02e-023d-4368-b380-5238ded02ad7" />
 
 ### Responsive to mobile devices
-<img width="1080" height="2306" alt="image" src="https://github.com/user-attachments/assets/02267740-4359-4685-8913-20fe15027333" />
+<img width="1080" height="962" alt="image" src="https://github.com/user-attachments/assets/02267740-4359-4685-8913-20fe15027333" />
 
 ## Features
 
