@@ -1,4 +1,4 @@
-<img width="1919" height="963" alt="image" src="https://github.com/user-attachments/assets/aaf727c4-7a21-4ec4-8bf1-d352f79425e8" /># WeConnect
+# WeConnect
 
 WeConnect is a real-time group chat application built with Node.js, Express, Socket.IO, and MariaDB. It supports user authentication, pool-based conversations, admin-only SQL access, containerized local development, Kubernetes deployment, and a working CI/CD pipeline that builds Docker images and rolls updates to GKE automatically.
 
