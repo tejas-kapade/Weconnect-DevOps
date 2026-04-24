@@ -1,4 +1,4 @@
-# WeConnect
+<img width="1919" height="963" alt="image" src="https://github.com/user-attachments/assets/aaf727c4-7a21-4ec4-8bf1-d352f79425e8" /># WeConnect
 
 WeConnect is a real-time group chat application built with Node.js, Express, Socket.IO, and MariaDB. It supports user authentication, pool-based conversations, admin-only SQL access, containerized local development, Kubernetes deployment, and a working CI/CD pipeline that builds Docker images and rolls updates to GKE automatically.
 
@@ -6,27 +6,19 @@ WeConnect is a real-time group chat application built with Node.js, Express, Soc
 
 ### Login Page
 
-Place your login screenshot here later.
+<img width="1596" height="775" alt="image" src="https://github.com/user-attachments/assets/4a4d66c1-96ce-48aa-82e6-2a9864a67a6b" />
 
-```text
-Suggested path: docs/images/login-page.png
-```
+### Pools page
 
-<!-- Replace this comment with:
-![Login Page](docs/images/login-page.png)
--->
+<img width="1602" height="779" alt="image" src="https://github.com/user-attachments/assets/4c7c1fc2-c4ee-4808-8f1d-a96edb42eb0d" />
 
-### Chat Page
+### Chatting page
 
-Place your chat screenshot here later.
+<img width="1919" height="963" alt="image" src="https://github.com/user-attachments/assets/de635781-3709-4a17-bc14-3e0adc65d2b8" />
 
-```text
-Suggested path: docs/images/chat-page.png
-```
+### Admin Panel
 
-<!-- Replace this comment with:
-![Chat Page](docs/images/chat-page.png)
--->
+<img width="1893" height="955" alt="image" src="https://github.com/user-attachments/assets/7b9fc02e-023d-4368-b380-5238ded02ad7" />
 
 ## Features
 
