@@ -69,6 +69,8 @@ weconnect/
 |-- helm/
 |   |-- monitoring/                 # kube-prometheus-stack values
 |   `-- weconnect-observability/    # App-specific ServiceMonitor and Grafana dashboard chart
+|-- infra/
+|   `-- terraform/                  # GKE infrastructure as code
 |-- k8s/                            # App and database Kubernetes manifests
 |-- monitoring/                     # Local Docker Compose Prometheus/Grafana config
 |-- public/                         # Frontend pages, CSS, browser JS
@@ -252,6 +254,55 @@ kubectl apply -f k8s/
 
 Note:
 Do not rely on `kubectl apply -f k8s/` for `ServiceMonitor` resources before Prometheus Operator CRDs exist. Those CRDs are installed by the Helm monitoring stack.
+
+## Terraform Infrastructure
+
+Terraform code is available in `infra/terraform/` to provision the base GKE infrastructure automatically.
+
+It creates:
+
+- Required Google Cloud APIs
+- A custom VPC
+- A subnet with secondary IP ranges for pods and services
+- A GKE cluster with Workload Identity enabled
+- A managed autoscaling node pool
+
+Important files:
+
+- `infra/terraform/versions.tf`
+- `infra/terraform/variables.tf`
+- `infra/terraform/main.tf`
+- `infra/terraform/outputs.tf`
+- `infra/terraform/terraform.tfvars.example`
+
+### Provision the Cluster
+
+From `infra/terraform/`:
+
+```powershell
+copy terraform.tfvars.example terraform.tfvars
+```
+
+Update `terraform.tfvars` with your project values, then run:
+
+```powershell
+gcloud auth application-default login
+terraform init
+terraform plan
+terraform apply
+```
+
+After apply, fetch cluster credentials:
+
+```powershell
+gcloud container clusters get-credentials <cluster-name> --location <cluster-location> --project <project-id>
+```
+
+Then continue with:
+
+1. `kubectl apply -f k8s/`
+2. Install `kube-prometheus-stack`
+3. Install `weconnect-observability`
 
 ### Install Monitoring with Helm
 
