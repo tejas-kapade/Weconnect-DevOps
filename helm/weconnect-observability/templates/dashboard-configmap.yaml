@@ -1,0 +1,14 @@
+{{- if .Values.dashboard.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.dashboard.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{ .Values.dashboard.label }}: {{ .Values.dashboard.labelValue | quote }}
+  annotations:
+    grafana_folder: {{ .Values.dashboard.folder }}
+data:
+  weconnect-overview.json: |
+{{ .Files.Get "files/dashboards/weconnect-overview.json" | indent 4 }}
+{{- end }}

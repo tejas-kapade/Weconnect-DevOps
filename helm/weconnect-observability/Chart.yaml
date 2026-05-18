@@ -1,0 +1,6 @@
+apiVersion: v2
+name: weconnect-observability
+description: Helm chart for WeConnect monitoring resources
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

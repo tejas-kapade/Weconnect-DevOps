@@ -1,0 +1,15 @@
+serviceMonitor:
+  enabled: true
+  name: weconnect-app
+  serviceLabel: weconnect-app
+  serviceNamespace: default
+  interval: 15s
+  path: /metrics
+  port: http
+
+dashboard:
+  enabled: true
+  name: weconnect-grafana-dashboard
+  folder: WeConnect
+  label: grafana_dashboard
+  labelValue: "1"
