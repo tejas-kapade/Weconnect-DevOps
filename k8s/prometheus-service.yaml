@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: prometheus-service
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: prometheus
   ports:

@@ -176,6 +176,21 @@ Local Grafana credentials:
 
 Prometheus is preconfigured to scrape the app, and Grafana is preconfigured with Prometheus as its default datasource.
 
+For Kubernetes, monitoring is now intended to be installed with Helm using `kube-prometheus-stack`, with app-specific resources applied from `k8s/`.
+
+Helm files added for this:
+
+- `helm/monitoring/values.yaml`
+- `k8s/weconnect-servicemonitor.yaml`
+- `k8s/weconnect-grafana-dashboard.yaml`
+
+The Helm values enable:
+
+- Persistent storage for Grafana (`10Gi`)
+- Persistent storage for Prometheus (`20Gi`)
+- Grafana sidecar dashboard discovery from ConfigMaps
+- Prometheus discovery of `ServiceMonitor` resources
+
 ## Docker
 
 The production image is built from the root [Dockerfile](Dockerfile):
@@ -208,13 +223,8 @@ The `k8s/` folder contains manifests for both the application and the database:
 - `db-pvc.yaml`
 - `db-configMap.yaml`
 - `secrets.yaml`
-- `monitoring-secret.yaml`
-- `prometheus-configmap.yaml`
-- `prometheus-deployment.yaml`
-- `prometheus-service.yaml`
-- `grafana-datasource-configmap.yaml`
-- `grafana-deployment.yaml`
-- `grafana-service.yaml`
+- `weconnect-servicemonitor.yaml`
+- `weconnect-grafana-dashboard.yaml`
 
 Apply the manifests:
 
@@ -228,10 +238,35 @@ Current Kubernetes setup includes:
 - App service exposed as `LoadBalancer`
 - MariaDB deployment with persistent storage
 - Secret-based injection for database password and JWT secret
-- Prometheus scraping `weconnect-service`
-- Grafana exposed as a `LoadBalancer`
+- A `ServiceMonitor` for Prometheus Operator-based scraping
+- A starter Grafana dashboard loaded from a ConfigMap
 
-Before applying in production, change the Grafana admin password in `k8s/monitoring-secret.yaml`.
+### Install Monitoring with Helm
+
+Install the monitoring stack into a dedicated namespace:
+
+```bash
+kubectl create namespace monitoring
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install monitoring prometheus-community/kube-prometheus-stack \
+  --namespace monitoring \
+  -f helm/monitoring/values.yaml
+```
+
+Then apply the app monitoring resources:
+
+```bash
+kubectl apply -f k8s/app-service.yaml
+kubectl apply -f k8s/weconnect-servicemonitor.yaml
+kubectl apply -f k8s/weconnect-grafana-dashboard.yaml
+```
+
+Recommended before production use:
+
+- Change `grafana.adminPassword` in `helm/monitoring/values.yaml`
+- Adjust `storageClassName` if your GKE cluster does not use `standard-rwo`
+- Prefer storing the Grafana admin password in a Kubernetes secret or external secret manager
 
 ## CI/CD Workflow
 

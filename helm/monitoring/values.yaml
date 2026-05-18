@@ -1,0 +1,47 @@
+grafana:
+  enabled: true
+  adminPassword: admin123
+  service:
+    type: LoadBalancer
+  persistence:
+    enabled: true
+    type: pvc
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+    storageClassName: standard-rwo
+  sidecar:
+    datasources:
+      enabled: true
+      defaultDatasourceEnabled: true
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      labelValue: "1"
+      searchNamespace: ALL
+      folderAnnotation: grafana_folder
+
+prometheus:
+  service:
+    type: ClusterIP
+  prometheusSpec:
+    retention: 15d
+    scrapeInterval: 15s
+    evaluationInterval: 15s
+    serviceMonitorSelector: {}
+    serviceMonitorSelectorNilUsesHelmValues: false
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: standard-rwo
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 20Gi
+
+alertmanager:
+  enabled: false
+
+kubeEtcd:
+  enabled: false

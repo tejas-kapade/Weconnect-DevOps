@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: weconnect-app
+  labels:
+    app: weconnect-app
+spec:
+  selector:
+    matchLabels:
+      app: weconnect-app
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
