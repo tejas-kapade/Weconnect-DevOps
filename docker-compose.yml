@@ -17,6 +17,7 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+
   db:
     image: mariadb:10.6
     container_name: weconnect-db
@@ -29,5 +30,35 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./db/db.sql:/docker-entrypoint-initdb.d/db.sql
+
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    container_name: weconnect-prometheus
+    restart: always
+    depends_on:
+      - app
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+
+  grafana:
+    image: grafana/grafana:11.1.0
+    container_name: weconnect-grafana
+    restart: always
+    depends_on:
+      - prometheus
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+
 volumes:
   db_data:
+  prometheus_data:
+  grafana_data:

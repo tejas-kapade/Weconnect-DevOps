@@ -35,6 +35,7 @@ WeConnect is a real-time group chat application built with Node.js, Express, Soc
 - Chat history stored in MariaDB
 - Admin-only query console for database inspection and operations
 - Dockerized application setup for local development
+- Prometheus metrics endpoint with Prometheus and Grafana monitoring support
 - Kubernetes manifests for app and database deployment
 - GitHub Actions pipeline for build, push, and GKE rollout
 
@@ -153,8 +154,27 @@ This starts:
 
 - `weconnect-app` on port `3000`
 - `weconnect-db` on port `3306`
+- `prometheus` on port `9090`
+- `grafana` on port `3001`
 
 The SQL file in `db/db.sql` is mounted into the MariaDB container and initializes the database on first startup.
+
+## Monitoring
+
+The application exposes Prometheus metrics at `GET /metrics`.
+
+Local monitoring endpoints:
+
+- App: `http://localhost:3000`
+- Prometheus: `http://localhost:9090`
+- Grafana: `http://localhost:3001`
+
+Local Grafana credentials:
+
+- Username: `admin`
+- Password: `admin123`
+
+Prometheus is preconfigured to scrape the app, and Grafana is preconfigured with Prometheus as its default datasource.
 
 ## Docker
 
@@ -188,6 +208,13 @@ The `k8s/` folder contains manifests for both the application and the database:
 - `db-pvc.yaml`
 - `db-configMap.yaml`
 - `secrets.yaml`
+- `monitoring-secret.yaml`
+- `prometheus-configmap.yaml`
+- `prometheus-deployment.yaml`
+- `prometheus-service.yaml`
+- `grafana-datasource-configmap.yaml`
+- `grafana-deployment.yaml`
+- `grafana-service.yaml`
 
 Apply the manifests:
 
@@ -201,6 +228,10 @@ Current Kubernetes setup includes:
 - App service exposed as `LoadBalancer`
 - MariaDB deployment with persistent storage
 - Secret-based injection for database password and JWT secret
+- Prometheus scraping `weconnect-service`
+- Grafana exposed as a `LoadBalancer`
+
+Before applying in production, change the Grafana admin password in `k8s/monitoring-secret.yaml`.
 
 ## CI/CD Workflow
 
