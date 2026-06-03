@@ -6,6 +6,7 @@ metadata:
     app: weconnect-app
 spec:
   type: LoadBalancer
+  sessionAffinity: ClientIP
   selector:
     app: weconnect-app
   ports:

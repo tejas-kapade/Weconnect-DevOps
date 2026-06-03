@@ -8,12 +8,14 @@ services:
       - "3000:3000"
     depends_on:
       - db
+      - redis
     environment:
       - DB_HOST=db
       - DB_USER=root
       - DB_PASSWORD=989878
       - DB_NAME=WECONDB
       - JWT_SECRET=Metacore@989/
+      - REDIS_URL=redis://redis:6379
     volumes:
       - .:/app
       - /app/node_modules
@@ -30,6 +32,13 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./db/db.sql:/docker-entrypoint-initdb.d/db.sql
+
+  redis:
+    image: redis:7-alpine
+    container_name: weconnect-redis
+    restart: always
+    ports:
+      - "6379:6379"
 
   prometheus:
     image: prom/prometheus:v2.53.0

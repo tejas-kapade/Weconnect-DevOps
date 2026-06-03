@@ -3,6 +3,8 @@ require("dotenv").config();
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
+const { createAdapter } = require("@socket.io/redis-adapter");
+const { createClient } = require("redis");
 const client = require("prom-client");
 
 const db = require("./config/db");
@@ -110,6 +112,33 @@ const io = new Server(server, {
     }
 });
 
+async function configureSocketAdapter() {
+    const redisUrl = process.env.REDIS_URL || (
+        process.env.REDIS_HOST
+            ? `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT || 6379}`
+            : null
+    );
+
+    if (!redisUrl) {
+        console.log("Socket.IO Redis adapter disabled; using in-memory adapter");
+        return;
+    }
+
+    const pubClient = createClient({ url: redisUrl });
+    const subClient = pubClient.duplicate();
+
+    pubClient.on("error", (err) => console.error("Redis pub client error:", err));
+    subClient.on("error", (err) => console.error("Redis sub client error:", err));
+
+    await Promise.all([
+        pubClient.connect(),
+        subClient.connect()
+    ]);
+
+    io.adapter(createAdapter(pubClient, subClient));
+    console.log("Socket.IO Redis adapter connected");
+}
+
 //MIDDLEWARE FOR SOCKET.IO AUTHENTICATION
 io.use((socket, next) => {
     try {
@@ -211,9 +240,16 @@ app.listen(PORT, () => {
 
 //IMPORTANT: use server.listen NOT app.listen
 /* Old code, before adding DB connection retry logic */
-server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+configureSocketAdapter()
+    .then(() => {
+        server.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+    })
+    .catch((err) => {
+        console.error("Failed to start Socket.IO Redis adapter:", err);
+        process.exit(1);
+    });
 
 /*Below code should be added to ensure that server starts only after DB connection is established, and also adds retry logic for DB connection
 (async () => {

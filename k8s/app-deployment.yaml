@@ -35,3 +35,5 @@ spec:
             secretKeyRef:
               name: weconnect-secret
               key: JWT_SECRET
+        - name: REDIS_URL
+          value: redis://weconnect-redis:6379

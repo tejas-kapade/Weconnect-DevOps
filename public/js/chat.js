@@ -87,7 +87,7 @@ async function loadOldMessages() {
     });
 
     const messages = await res.json();
-    console.log("OLD MESSAGES:", messages);
+    // console.log("OLD MESSAGES:", messages);
  
     /* Old logic for displaying messages without time formatting */
     messages.forEach(msg => {
