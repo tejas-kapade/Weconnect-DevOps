@@ -2,7 +2,7 @@ grafana:
   enabled: true
   adminPassword: admin123
   service:
-    type: LoadBalancer
+    type: ClusterIP
   persistence:
     enabled: true
     type: pvc
@@ -14,6 +14,7 @@ grafana:
     datasources:
       enabled: true
       defaultDatasourceEnabled: true
+      uid: prometheus
     dashboards:
       enabled: true
       label: grafana_dashboard

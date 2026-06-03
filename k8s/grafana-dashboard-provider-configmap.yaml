@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-providers
+data:
+  dashboards.yml: |
+    apiVersion: 1
+
+    providers:
+      - name: WeConnect
+        orgId: 1
+        folder: WeConnect
+        type: file
+        disableDeletion: false
+        updateIntervalSeconds: 30
+        allowUiUpdates: true
+        options:
+          path: /var/lib/grafana/dashboards/weconnect

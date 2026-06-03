@@ -33,9 +33,19 @@ spec:
               mountPath: /var/lib/grafana
             - name: grafana-datasources
               mountPath: /etc/grafana/provisioning/datasources
+            - name: grafana-dashboard-providers
+              mountPath: /etc/grafana/provisioning/dashboards
+            - name: weconnect-grafana-dashboard
+              mountPath: /var/lib/grafana/dashboards/weconnect
       volumes:
         - name: grafana-storage
           emptyDir: {}
         - name: grafana-datasources
           configMap:
             name: grafana-datasources
+        - name: grafana-dashboard-providers
+          configMap:
+            name: grafana-dashboard-providers
+        - name: weconnect-grafana-dashboard
+          configMap:
+            name: weconnect-grafana-dashboard
